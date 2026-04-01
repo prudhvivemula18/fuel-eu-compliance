@@ -7,4 +7,55 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// FuelEU Maritime domain models will be added here; no business tables yet.
+model Route {
+  id               String   @id @default(uuid())
+  route_id         String   @unique
+  vessel_type      String
+  fuel_type        String
+  year             Int
+  ghg_intensity    Decimal  @db.Decimal(10, 2)
+  fuel_consumption Int
+  distance         Int
+  total_emissions  Int
+  is_baseline      Boolean
+
+  @@map("routes")
+}
+
+model ShipCompliance {
+  id        String  @id @default(uuid())
+  ship_id   String
+  year      Int
+  cb_gco2eq Decimal @db.Decimal(18, 4)
+
+  @@map("ship_compliance")
+}
+
+model BankEntry {
+  id            String  @id @default(uuid())
+  ship_id       String
+  year          Int
+  amount_gco2eq Decimal @db.Decimal(18, 4)
+
+  @@map("bank_entries")
+}
+
+model Pool {
+  id         String       @id @default(uuid())
+  year       Int
+  created_at DateTime     @default(now())
+  members    PoolMember[]
+
+  @@map("pools")
+}
+
+model PoolMember {
+  pool_id   String
+  ship_id   String
+  cb_before Decimal @db.Decimal(18, 4)
+  cb_after  Decimal @db.Decimal(18, 4)
+  pool      Pool    @relation(fields: [pool_id], references: [id], onDelete: Cascade)
+
+  @@id([pool_id, ship_id])
+  @@map("pool_members")
+}
