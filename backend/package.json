@@ -1,0 +1,26 @@
+{
+  "name": "backend",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "build": "prisma generate && tsc",
+    "dev": "prisma generate && tsx watch src/infrastructure/server/main.ts",
+    "start": "node dist/infrastructure/server/main.js",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:push": "prisma db push",
+    "db:studio": "prisma studio"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.19.0",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/node": "^22.16.5",
+    "prisma": "^6.19.0",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2"
+  }
+}
