@@ -1,8 +1,18 @@
 import { createHttpApp } from '../../adapters/inbound/http/index.js';
-import { disconnectPrisma } from '../db/index.js';
+import { RouteComplianceReadPrismaAdapter } from '../../adapters/outbound/postgres/routeComplianceReadAdapter.js';
+import { ComplianceService } from '../../core/application/ComplianceService.js';
+import { disconnectPrisma, getPrismaClient } from '../db/index.js';
+import { registerApiRoutes } from './routes.js';
 
 const port = Number(process.env.PORT) || 3000;
+
+const prisma = getPrismaClient();
+const complianceService = new ComplianceService(
+  new RouteComplianceReadPrismaAdapter(prisma),
+);
+
 const app = createHttpApp();
+registerApiRoutes(app, complianceService);
 
 const server = app.listen(port, () => {
   console.log(`HTTP server listening on http://localhost:${port}`);
