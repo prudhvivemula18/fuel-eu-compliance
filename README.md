@@ -250,6 +250,9 @@ PORT=3000
 
 ---
 
+<<<<<<< HEAD
 ## License
 
 MIT
+=======
+>>>>>>> 959393fb47fa88582f3cfb34a89160bbf4719afa
