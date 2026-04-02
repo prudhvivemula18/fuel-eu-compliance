@@ -4,6 +4,7 @@ import { Prisma, PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 async function main(): Promise<void> {
+  await prisma.shipCompliance.deleteMany({})
   await prisma.route.deleteMany()
 
   await prisma.route.createMany({
@@ -62,6 +63,22 @@ async function main(): Promise<void> {
         distance: 11900,
         total_emissions: 4400,
         is_baseline: false,
+      },
+    ],
+  })
+
+  // Demo CB rows: `ship_id` uses route-style ids (R002), not Route internal UUIDs.
+  await prisma.shipCompliance.createMany({
+    data: [
+      {
+        ship_id: 'R002',
+        year: 2024,
+        cb_gco2eq: new Prisma.Decimal('62000'),
+      },
+      {
+        ship_id: 'SHIP-001',
+        year: 2024,
+        cb_gco2eq: new Prisma.Decimal('18000'),
       },
     ],
   })

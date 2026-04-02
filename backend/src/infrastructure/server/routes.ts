@@ -1,18 +1,10 @@
 import type { Application } from 'express';
 import { Router } from 'express';
-import type { ComplianceService } from '../../core/application/ComplianceService.js';
-import { createComplianceController } from './controllers/ComplianceController.js';
+import type { HttpApiDeps } from '../../adapters/inbound/http/httpApiDeps.js';
+import { registerHttpApiRoutes } from '../../adapters/inbound/http/registerHttpApiRoutes.js';
 
-export function registerApiRoutes(
-  app: Application,
-  complianceService: ComplianceService,
-): void {
+export function registerApiRoutes(app: Application, deps: HttpApiDeps): void {
   const api = Router();
-  const compliance = createComplianceController(complianceService);
-
-  api.get('/compliance/:routeId', (req, res, next) => {
-    void compliance.getRouteCompliance(req, res, next);
-  });
-
+  registerHttpApiRoutes(api, deps);
   app.use('/api', api);
 }

@@ -11,3 +11,10 @@ export class BaselineRouteNotFoundError extends Error {
     this.name = 'BaselineRouteNotFoundError'
   }
 }
+
+export class ValidationError extends Error {
+  constructor(message: string) {
+    super(message)
+    this.name = 'ValidationError'
+  }
+}
