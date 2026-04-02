@@ -11,7 +11,7 @@
 
 This document records the phased development process used to build the FuelEU Maritime Compliance Dashboard. Each phase was introduced to the AI agent through deliberately scoped prompts — a technique referred to throughout this log as **Phased Prompting**. The approach limited the AI's generation scope to one architectural concern at a time, preventing cross-layer contamination and reducing the cognitive overhead of reviewing large, monolithic outputs.
 
-A recurring challenge documented below is the **Architectural Leak** — instances where the AI agent, left without explicit constraint, attempted to introduce Prisma ORM logic (`PrismaClient`, model queries, `$transaction`) directly into Domain or Use-Case layer files. Each detected leak is documented with the corrective action taken.
+A recurring challenge documented below is the **Architectural Leak** — instances where the AI agent, left without explicit constraint, attempted to introduce Prisma ORM logic (`PrismaClient`, model queries, `transaction`) directly into Domain or Use-Case layer files. Each detected leak is documented with the corrective action taken.
 
 ---
 
