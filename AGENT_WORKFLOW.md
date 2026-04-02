@@ -9,7 +9,7 @@
 
 ## Overview
 
-This document records the phased development process used to build the FuelEU Maritime Compliance Dashboard. Each phase was introduced to the AI agent through deliberately scoped prompts — a technique referred to throughout this log as **Phased Prompting**. The approach limited the AI's generation scope to one architectural concern at a time, preventing cross-layer contamination and reducing the cognitive overhead of reviewing large, monolithic outputs.
+This document records the phased development process used to build the FuelEU Maritime Compliance Dashboard. Each phase was introduced to the AI agent through deliberately scoped prompts , a technique referred to throughout this log as **Phased Prompting**. The approach limited the AI's generation scope to one architectural concern at a time, preventing cross-layer contamination and reducing the cognitive overhead of reviewing large, monolithic outputs.
 
 A recurring challenge documented below is the **Architectural Leak** — instances where the AI agent, left without explicit constraint, attempted to introduce Prisma ORM logic (`PrismaClient`, model queries, `transaction`) directly into Domain or Use-Case layer files. Each detected leak is documented with the corrective action taken.
 
@@ -30,7 +30,7 @@ The initial prompt was scoped exclusively to the mathematical specification:
 In an early draft, the AI generated `calculateRouteCompliance` with a direct import of `PrismaClient` and an inline `prisma.route.findFirst()` call, rather than delegating through the `RouteRepositoryPort` interface. The method signature was:
 
 ```typescript
-// ❌ LEAKED — AI-generated anti-pattern (rejected)
+//  LEAKED — AI-generated anti-pattern (rejected)
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
@@ -43,7 +43,7 @@ async calculateRouteCompliance(routeId: string) {
 **Corrective Action:** The prompt was revised to explicitly prohibit any import outside the `core/` directory and to require that all data access occur via the injected port. The re-generated output correctly used the constructor-injected `RouteRepositoryPort`:
 
 ```typescript
-// ✅ CORRECTED — Port-based delegation
+//  CORRECTED — Port-based delegation
 constructor(private readonly routes: RouteRepositoryPort) {}
 
 async calculateRouteCompliance(routeId: string): Promise<RouteComplianceResult> {
